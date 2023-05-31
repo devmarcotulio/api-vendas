@@ -8,10 +8,10 @@ interface IRequest {
 }
 
 class ShowUserService {
-  public async execute(id: IRequest): Promise<User | undefined> {
+  public async execute({ id }: IRequest): Promise<User | undefined> {
     const usersRepository = getCustomRepository(UsersRepository);
 
-    const users = await usersRepository.findOne(id);
+    const users = await usersRepository.findById(id);
 
     if (!users) {
       throw new AppError('User not found');
