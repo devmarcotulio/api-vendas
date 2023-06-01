@@ -22,13 +22,13 @@ class UpdateUserService {
     const user = await usersRepository.findById(id);
 
     if (!user) {
-      throw new AppError('User not found');
+      throw new AppError('User not found.');
     }
 
     const emailExists = await usersRepository.findByEmail(email);
 
     if (emailExists) {
-      throw new AppError('Email already used');
+      throw new AppError('Email already used.');
     }
 
     user.name = name;

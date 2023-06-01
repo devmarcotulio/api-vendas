@@ -14,7 +14,7 @@ class ShowUserService {
     const users = await usersRepository.findById(id);
 
     if (!users) {
-      throw new AppError('User not found');
+      throw new AppError('User not found.');
     }
 
     return users;
