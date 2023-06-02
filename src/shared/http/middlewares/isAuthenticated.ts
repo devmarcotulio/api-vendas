@@ -17,7 +17,13 @@ export default function isAuthenticated(
   const [, token] = authHeader.split(' ');
 
   try {
-    verify(token, authConfig.jwt.secret);
+    const decodedToken = verify(token, authConfig.jwt.secret);
+
+    const { sub } = decodedToken;
+
+    req.user = {
+      id: sub,
+    };
 
     return next();
   } catch {
