@@ -24,8 +24,18 @@ class SendForgotPasswordEmailService {
     //console.log(token);
 
     await EtheralMail.sendMail({
-      to: email,
-      body: `Solicitação de redefinição de senha recebida ${token?.token}`,
+      to: {
+        name: user.name,
+        email: user.email,
+      },
+      subject: '[API Vendas] Recuperação de senha',
+      templateData: {
+        template: `Olá {{name}}, seu token para recuperação de senha é: {{token}}`,
+        variables: {
+          name: user.name,
+          token: token.token,
+        },
+      },
     });
   }
 }
