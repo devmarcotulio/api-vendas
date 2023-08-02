@@ -11,7 +11,7 @@ profileRouter.use(isAuthenticated);
 profileRouter.get('/', profileController.show);
 
 profileRouter.put(
-  '/:id',
+  '/',
   celebrate({
     [Segments.BODY]: {
       name: Joi.string().required(),
