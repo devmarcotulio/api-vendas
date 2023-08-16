@@ -9,15 +9,22 @@ import AppError from '@shared/errors/appError';
 import '@shared/typeorm';
 import { errors } from 'celebrate';
 import uploadConfig from '@config/upload';
+import rateLimiter from './middlewares/rateLimiter';
 
 const app = express();
 
 app.use(cors());
+
 app.use(express.json());
+
+app.use(rateLimiter);
+
 app.use(pagination);
 
 app.use(routes);
+
 app.use(errors());
+
 app.use('/files', express.static(uploadConfig.directory));
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
