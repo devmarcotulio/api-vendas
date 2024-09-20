@@ -1,9 +1,9 @@
 import AppError from '@shared/errors/appError';
 import { getCustomRepository } from 'typeorm';
-import { UsersRepository } from '../typeorm/repositories/usersRepository';
-import UserTokensRepository from '../typeorm/repositories/userTokenRepository';
+import UsersRepository from '../typeorm/repositories/usersRepository';
 import { isAfter, addHours } from 'date-fns';
 import { hash } from 'bcryptjs';
+import UsersTokenRepository from '../typeorm/repositories/usersTokenRepository';
 
 interface IRequest {
   token: string;
@@ -12,8 +12,8 @@ interface IRequest {
 
 class ResetPasswordService {
   public async execute({ token, password }: IRequest): Promise<void> {
-    const usersRepository = getCustomRepository(UsersRepository);
-    const userTokenRepository = getCustomRepository(UserTokensRepository);
+    const userRepository = getCustomRepository(UsersRepository);
+    const userTokenRepository = getCustomRepository(UsersTokenRepository);
 
     const userToken = await userTokenRepository.findByToken(token);
 
@@ -21,7 +21,7 @@ class ResetPasswordService {
       throw new AppError('User token does not exists');
     }
 
-    const user = await usersRepository.findById(userToken.user_id);
+    const user = await userRepository.findById(userToken.user_id);
 
     if (!user) {
       throw new AppError('User does not exists');
@@ -36,7 +36,7 @@ class ResetPasswordService {
 
     user.password = await hash(password, 8);
 
-    await usersRepository.save(user);
+    await userRepository.save(user);
   }
 }
 

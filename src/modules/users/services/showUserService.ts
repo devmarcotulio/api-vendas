@@ -1,6 +1,6 @@
 import { getCustomRepository } from 'typeorm';
 import User from '../typeorm/entities/user';
-import { UsersRepository } from '../typeorm/repositories/usersRepository';
+import UsersRepository from '../typeorm/repositories/usersRepository';
 import AppError from '@shared/errors/appError';
 
 interface IRequest {
@@ -9,9 +9,9 @@ interface IRequest {
 
 class ShowUserService {
   public async execute({ id }: IRequest): Promise<User | undefined> {
-    const usersRepository = getCustomRepository(UsersRepository);
+    const userRepository = getCustomRepository(UsersRepository);
 
-    const users = await usersRepository.findById(id);
+    const users = await userRepository.findById(id);
 
     if (!users) {
       throw new AppError('User not found.');

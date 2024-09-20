@@ -1,6 +1,6 @@
 import { getCustomRepository } from 'typeorm';
 import User from '../typeorm/entities/user';
-import { UsersRepository } from '../typeorm/repositories/usersRepository';
+import UsersRepository from '../typeorm/repositories/usersRepository';
 import AppError from '@shared/errors/appError';
 
 interface IRequest {
@@ -17,15 +17,15 @@ class UpdateUserService {
     email,
     password,
   }: IRequest): Promise<User | undefined> {
-    const usersRepository = getCustomRepository(UsersRepository);
+    const userRepository = getCustomRepository(UsersRepository);
 
-    const user = await usersRepository.findById(id);
+    const user = await userRepository.findById(id);
 
     if (!user) {
       throw new AppError('User not found.');
     }
 
-    const emailExists = await usersRepository.findByEmail(email);
+    const emailExists = await userRepository.findByEmail(email);
 
     if (emailExists) {
       throw new AppError('Email already used.');
@@ -35,7 +35,7 @@ class UpdateUserService {
     user.email = email;
     user.password = password;
 
-    await usersRepository.save(user);
+    await userRepository.save(user);
 
     return user;
   }
